@@ -7,6 +7,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import './airport-styles.scss';
 
 const AirportListing = (props) => {
+    let sessionStorage = window.sessionStorage;
     const [currentData,updateCurrentData] = useState(airportData);
     const [currentFilteredResult,updateFilterResult] = useState(airportData);
     const [filterData,updateFilter] = useState({
@@ -66,31 +67,53 @@ const AirportListing = (props) => {
 
     useEffect(()=>{
         let filteredData= [];
-        airportData.forEach((value) => {
-            let add = false;
-            let termMatch = false;
-            if(filterData.checkBox.indexOf(value.type) !== -1){
-                add = true;
-            }else if(filterData.checkBox.length == 0){
-                add = true;
-            }
-            if(filterData.searchTerm){
-                let term = (filterData.searchTerm).toLocaleLowerCase();
-                if((value.name && ((value.name).toLowerCase()).includes(term)) || (value.icao && ((value.icao).toLowerCase()).includes(term)) || (value.iata && ((value.iata).toLowerCase()).includes(term))){
-                    termMatch = true;
-                }
-                if(!isNaN(term) && (value.latitude === Number(term) || value.longitude === Number(term))){
-                    termMatch = true;
-                }
-            }else{
-                termMatch = true;
-            }
-            if(add && termMatch){
-                filteredData.push(value);
-            }
-        })
-        if(filterData.searchTerm === '' && filterData.checkBox.length === 0){
+        let key = '';
+        let isCached = false;
+        if(filterData.checkBox.length){
+            filterData.checkBox.forEach(value => {
+                key += value;
+            })
+        }
+        if(filterData.searchTerm){
+            key += filterData.searchTerm;
+        }
+
+        //Caching Implemented using Session Storage
+        if(sessionStorage.getItem(key)){
+            isCached = true;
+            filteredData = JSON.parse(sessionStorage.getItem(key));
+        }else if(filterData.searchTerm === '' && filterData.checkBox.length === 0){
             filteredData = airportData;
+        }else{
+            airportData.forEach((value) => {
+                let add = false;
+                let termMatch = false;
+                if(filterData.checkBox.indexOf(value.type) !== -1){
+                    add = true;
+                }else if(filterData.checkBox.length == 0){
+                    add = true;
+                }
+                if(filterData.searchTerm){
+                    let term = (filterData.searchTerm).toLocaleLowerCase();
+                    if((value.name && ((value.name).toLowerCase()).includes(term)) || (value.icao && ((value.icao).toLowerCase()).includes(term)) || (value.iata && ((value.iata).toLowerCase()).includes(term))){
+                        termMatch = true;
+                    }
+                    if(!isNaN(term) && (value.latitude === Number(term) || value.longitude === Number(term))){
+                        termMatch = true;
+                    }
+                }else{
+                    termMatch = true;
+                }
+                if(add && termMatch){
+                    filteredData.push(value);
+                }
+            })
+        }
+       
+        if(!isCached){
+            let dataToStore = [...filteredData];
+            dataToStore = JSON.stringify(dataToStore);
+            sessionStorage.setItem(key,dataToStore);
         }
         updatePageData({
             curentPage: 0,
