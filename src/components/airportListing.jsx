@@ -68,19 +68,22 @@ const AirportListing = (props) => {
         let filteredData= [];
         airportData.forEach((value) => {
             let add = false;
+            let termMatch = false;
             if(filterData.checkBox.indexOf(value.type) !== -1){
                 add = true;
             }
             if(filterData.searchTerm){
                 let term = (filterData.searchTerm).toLocaleLowerCase();
                 if((value.name && ((value.name).toLowerCase()).includes(term)) || (value.icao && ((value.icao).toLowerCase()).includes(term)) || (value.iata && ((value.iata).toLowerCase()).includes(term))){
-                    add = true;
+                    termMatch = true;
                 }
                 if(!isNaN(term) && (value.latitude === Number(term) || value.longitude === Number(term))){
-                    add = true;
+                    termMatch = true;
                 }
+            }else{
+                termMatch = true;
             }
-            if(add){
+            if(add && termMatch){
                 filteredData.push(value);
             }
         })
