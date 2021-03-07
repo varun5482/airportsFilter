@@ -113,7 +113,7 @@ const AirportListing = (props) => {
             </div>
             <div className="page-info">
                 <div className="arrow-icon" onClick={()=>{handlePagination({action:'back'})}}><ArrowBackIcon /></div>
-                <div className="text-field">Showing <span className="bold-text">{pageData.curentPage + 1}</span> - <span className="bold-text">{(pageData.curentPage + limit) > currentFilteredResult.length ? currentFilteredResult.length : (pageData.curentPage + limit)}</span> of <span className="bold-text">{currentFilteredResult.length}</span></div>
+                <div className="text-field">Showing <span className="bold-text">{currentFilteredResult.length == 0 ? 0 : pageData.curentPage + 1}</span> - <span className="bold-text">{(pageData.curentPage + limit) > currentFilteredResult.length ? currentFilteredResult.length : (pageData.curentPage + limit)}</span> of <span className="bold-text">{currentFilteredResult.length}</span></div>
                 <div className="arrow-icon" onClick={()=>{handlePagination({action:'forward'})}}><ArrowForwardIcon/></div>
             </div>
         </div>
