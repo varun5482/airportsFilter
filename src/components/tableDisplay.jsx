@@ -4,12 +4,12 @@ const tableDisplay = (props) => {
     let {data} = props;
     let tabularData = data.map((item,key) => {
         return <tr key={item.id}>
-            <td>{item.name}</td>
-            <td>{item.icao}</td>
-            <td>{item.iata}</td>
-            <td>{item.elevation} ft</td>
-            <td>{(item.latitude).toFixed(2)}</td>
-            <td>{(item.longitude).toFixed(2)}</td>
+            <td>{item.name || '-'}</td>
+            <td>{item.icao || '-'}</td>
+            <td>{item.iata || '-'}</td>
+            <td>{item.elevation || '-'} ft</td>
+            <td>{(item.latitude).toFixed(2) || '-'}</td>
+            <td>{(item.longitude).toFixed(2)|| '-'}</td>
             <td>{item.type}</td>
         </tr>
     })

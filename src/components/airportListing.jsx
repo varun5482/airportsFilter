@@ -72,10 +72,11 @@ const AirportListing = (props) => {
                 add = true;
             }
             if(filterData.searchTerm){
-                if((value.name && ((value.name).toLowerCase()).includes(filterData.searchTerm)) || (value.icao && ((value.icao).toLowerCase()).includes(filterData.searchTerm)) || (value.iata && ((value.iata).toLowerCase()).includes(filterData.searchTerm))){
+                let term = (filterData.searchTerm).toLocaleLowerCase();
+                if((value.name && ((value.name).toLowerCase()).includes(term)) || (value.icao && ((value.icao).toLowerCase()).includes(term)) || (value.iata && ((value.iata).toLowerCase()).includes(term))){
                     add = true;
                 }
-                if(!isNaN(filterData.searchTerm) && (value.latitude === Number(filterData.searchTerm) || value.longitude === Number(filterData.searchTerm))){
+                if(!isNaN(term) && (value.latitude === Number(term) || value.longitude === Number(term))){
                     add = true;
                 }
             }
