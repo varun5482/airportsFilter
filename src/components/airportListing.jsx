@@ -71,10 +71,8 @@ const AirportListing = (props) => {
             let termMatch = false;
             if(filterData.checkBox.indexOf(value.type) !== -1){
                 add = true;
-            }else{
-                if(filterData.checkBox.length == 0){
-                    add = true;
-                }
+            }else if(filterData.checkBox.length == 0){
+                add = true;
             }
             if(filterData.searchTerm){
                 let term = (filterData.searchTerm).toLocaleLowerCase();
